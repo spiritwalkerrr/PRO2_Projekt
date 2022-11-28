@@ -1,0 +1,54 @@
+/* DISPLAY LIST */
+.button-panel .button-small{
+width: 300px;
+margin-bottom: var(--small-margin)}
+
+.list-container{
+width: 100%;
+display: flex;}
+
+.list-details, .list-ratings{
+border-top: 1px solid black;
+padding: 10px 0 5px 0;
+box-sizing: border-box}
+
+.list-details{
+width: 70%;}
+
+.list-ratings{
+width: 30%;}
+
+
+.list-details>span{
+display: flex;
+}
+
+.list-details .button-small{
+width: 200px;}
+
+.list-details h2{
+margin-right: var(--small-margin)}
+
+.list-ratings .small-paragraph{
+display: flex;}
+
+.star-ratings{
+width: 100px;
+height: 20px;
+display: flex;
+margin-left: 10px;
+transform: translateY(-2px)}
+
+.star-full{
+width: 16px;
+height: 16px;
+margin-right: 3px}
+
+.star-empty{
+width: 16px;
+height: 16px;
+margin-right: 3px}
+
+.button-wrapper>.button-small{
+margin: 10px 0;
+width: 150px;}

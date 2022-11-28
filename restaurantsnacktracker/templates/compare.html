@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vergleich</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='compare.css') }}">
+</head>
+<body>
+{% include "navbar.jinja" %}
+<div class="grid-wrapper">
+    {% if restaurant_2[1].times_visited != 0 %}
+    <div class="grid-container">
+
+<h1>Restaurantvergleich</h1>
+        <ul class="restaurant-facts restaurant-facts-left">
+            <span class="bold-text"><li>{{restaurant_1[0].name}}</li></span>
+            <li>{{restaurant_1[0].address}}</li>
+            <li>{{restaurant_1[0].code}}, {{restaurant_1[0].town}}</li>
+        </ul>
+        <div class="restaurant-vs">
+VS
+        </div>
+        <ul class="restaurant-facts">
+            <span class="bold-text"><li>{{restaurant_2[0].name}}</li></span>
+            <li>{{restaurant_2[0].address}}</li>
+            <li>{{restaurant_2[0].code}}, {{restaurant_1[0].town}}</li>
+        </ul>
+<ul class="restaurant-facts restaurant-facts-left">
+            <li>{{restaurant_1[1].price_avg}} CHF</li>
+            <li>{{restaurant_1[1].wait_avg}} min</li>
+            <li>Essen-Score: {{restaurant_1[1].food_avg}}</li>
+            <li>Service-Score: {{restaurant_1[1].service_avg}}</li>
+            <li>Preis-Leistung: {{restaurant_1[1].value_avg}}</li>
+        </ul>
+        <ul class="restaurant-operator">
+            <li>
+                {% if restaurant_1[1].price_avg > restaurant_2[1].price_avg %}
+                    {{restaurant_2[0].name}} ist günstiger.
+                {% endif %}
+                {% if restaurant_2[1].price_avg > restaurant_1[1].price_avg %}
+                    {{restaurant_1[0].name}} ist günstiger.
+                {% endif %}
+                {% if restaurant_2[1].price_avg == restaurant_1[1].price_avg %}
+                    Beide sind gleich teuer.
+                {% endif %}
+            </li>
+            <li>
+                {% if restaurant_1[1].wait_avg > restaurant_2[1].wait_avg %}
+                    Bei {{restaurant_2[0].name}} wartet man weniger.
+                {% endif %}
+                {% if restaurant_2[1].wait_avg > restaurant_1[1].wait_avg %}
+                    Bei {{restaurant_1[0].name}} wartet man weniger.
+                {% endif %}
+                {% if restaurant_2[1].wait_avg == restaurant_1[1].wait_avg %}
+                    Gleiche Wartezeiten.
+                {% endif %}
+            </li>
+            <li>
+                {% if restaurant_1[1].food_avg > restaurant_2[1].food_avg %}
+                    Bei {{restaurant_1[0].name}} isst man besser.
+                {% endif %}
+                {% if restaurant_2[1].food_avg > restaurant_1[1].food_avg %}
+                    Bei {{restaurant_2[0].name}} isst man besser.
+                {% endif %}
+                {% if restaurant_2[1].food_avg == restaurant_1[1].food_avg %}
+                    Essensqualität ist vergleichbar.
+                {% endif %}
+            </li>
+            <li>
+                {% if restaurant_1[1].service_avg > restaurant_2[1].service_avg %}
+                    {{restaurant_1[0].name}} hat besseren Service.
+                {% endif %}
+                {% if restaurant_2[1].service_avg > restaurant_1[1].service_avg %}
+                    {{restaurant_2[0].name}} hat besseren Service.
+                {% endif %}
+                {% if restaurant_2[1].service_avg == restaurant_1[1].service_avg %}
+                    Service ist vergleichbar.
+                {% endif %}
+            </li>
+            <li>
+                {% if restaurant_1[1].value_avg > restaurant_2[1].value_avg %}
+                    {{restaurant_1[0].name}} lohnt sich eher.
+                {% endif %}
+                {% if restaurant_2[1].value_avg > restaurant_1[1].value_avg %}
+                    {{restaurant_2[0].name}} lohnt sich eher.
+                {% endif %}
+                {% if restaurant_2[1].value_avg == restaurant_1[1].value_avg %}
+                    Preis/Leistung ist vergleichbar.
+                {% endif %}
+            </li>
+        </ul>
+        <ul class="restaurant-facts">
+            <li>{{restaurant_2[1].price_avg}} CHF</li>
+            <li>{{restaurant_2[1].wait_avg}} min</li>
+            <li>Essen-Score: {{restaurant_2[1].food_avg}}</li>
+            <li>Service-Score: {{restaurant_2[1].service_avg}}</li>
+            <li>Preis-Leistung: {{restaurant_2[1].value_avg}}</li>
+        </ul>
+        <div class="restaurant-facts left-align">
+            <a href="/restaurant/{{restaurant_1[0].id}}" class="button-small">
+            Zu {{restaurant_1[0].name}}
+            </a>
+        </div>
+        <div class="restaurant-operator">
+
+        </div>
+        <div class="restaurant-facts">
+            <a href="/restaurant/{{restaurant_2[0].id}}" class="button-small">
+            Zu {{restaurant_2[0].name}}
+            </a>
+        </div>
+
+    </div>
+    {% endif %}
+    {% if restaurant_2[1].times_visited == 0 %}
+    <div class="grid-container">
+        <h1>Vergleich fehlgeschlagen.</h1>
+        <p class="standard-paragraph full-width">
+            Du wolltest mit einem Restaurant vergleichen, das noch keine Besuche hat.
+        </p>
+        <p class="standard-paragraph full-width">
+            Das Restaurant {{restaurant_2[0].name}} hat keine Besuche.
+        </p>
+        <div class="navigation-buttons full-width">
+            <a class="button-small" href="/visit/add/{{restaurant_2[0].id}}">Füge einen Besuch hinzu.</a>
+            <a class="button-small" href="/restaurants">Zurück zu den Restaurants.</a>
+            <a class="button-small" href="/restaurant/{{restaurant_1[0].id}}">Zurück zu Restaurant {{restaurant_1[0].name}}</a>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% include "footer.jinja" %}
+{% include "nav_script.jinja" %}
+</body>
+</html>

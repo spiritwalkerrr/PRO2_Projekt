@@ -1,0 +1,44 @@
+h1{
+text-align:center}
+
+.restaurant-facts{
+grid-column: span 4;}
+
+.restaurant-operator{
+grid-column: span 4;}
+
+.restaurant-vs{
+grid-column: span 4;
+display: flex;
+justify-content: center;
+align-items:center;
+font-size: 40px}
+
+li{
+margin: 10px 0}
+
+.restaurant-facts-left li{
+text-align:right}
+
+.restaurant-operator li{
+text-align: center}
+
+.restaurant-facts a{
+margin-top: var(--small-margin);
+width: 60%}
+
+.left-align{
+display: flex;
+justify-content: flex-end}
+
+.standard-paragraph{
+text-align: center;
+margin-bottom: var(--small-margin)}
+
+.navigation-buttons{
+display: flex;
+justify-content: space-between}
+
+
+.navigation-buttons a{
+width: 30%}

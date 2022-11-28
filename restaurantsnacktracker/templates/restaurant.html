@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant: {{restaurant.name}}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='restaurant.css') }}">
+</head>
+<body>
+{% include "navbar.jinja" %}
+<div class="grid-wrapper">
+    <div class="grid-container">
+
+<h1>Restaurant {{restaurant.name}}</h1>
+        <div class="button-panel full-width">
+            <a  class="button-small" href="/visit/add/{{restaurant.id}}">
+                Besuch hinzufügen
+            </a>
+            <a  class="button-small" href="/restaurant/edit/{{restaurant.id}}">
+                Restaurantdetails ändern
+            </a>
+            <a class="button-small button-warning" href="/restaurant/delete">
+                Restaurant löschen
+            </a>
+        </div>
+        <div class="restaurant-details full-width">
+            <ul class="restaurant-facts">
+                <li><h3>Fakten:</h3></li>
+                <li><span class="bold-text">Adresse:</span> {{restaurant.address}}</li>
+                <li><span class="bold-text">Ort:</span> {{restaurant.code}}, {{restaurant.town}}</li>
+                <li><span class="bold-text">Cuisine:</span> {{restaurant.cuisine}}</li>
+            </ul>
+            <ul class="restaurant-facts">
+                <li><h3>Statistiken:</h3></li>
+                {% if statistics.times_visited == 0 %}
+                <li>Wir konnten keine Statistiken generieren.</li>
+                <li>Du warst noch nie be {{restaurant.name}}.</li>
+                {% endif %}
+                {% if statistics.times_visited > 0 %}
+                <li><span class="bold-text">Besuche:</span> {{statistics.times_visited}}</li>
+                <li><span class="bold-text">Preisdurchschnitt:</span> {{statistics.price_avg}} CHF</li>
+                <li><span class="bold-text">Durchschnittliche Wartezeit:</span> {{statistics.wait_avg}} min</li>
+                <li><span class="bold-text">Essen-Score:</span> {{statistics.food_avg}}</li>
+                <li><span class="bold-text">Service-Score:</span> {{statistics.service_avg}}</li>
+                <li><span class="bold-text">Value-Score:</span> {{statistics.value_avg}}</li>
+                {% endif %}
+            </ul>
+            <ul class="restaurant-controls">
+                <form action="/restaurants/compare/{{restaurant.id}}" method="POST">
+                    <li><h3>Vergleich:</h3></li>
+                    {% if statistics.times_visited == 0 %}
+                    <li>
+                        Vergleich unmöglich:
+                    </li><li>
+                        Mindestens ein Besuch nötig..
+                    </li>
+                    {% endif %}
+                    {% if statistics.times_visited != 0%}
+                    <li><label for="restaurant">Vergleiche {{restaurant.name}} mit...</label></li>
+                    <li>
+                        <select name="restaurant" id="restaurant">
+                            {% for resti in restaurants %}
+                                {% if resti.id != restaurant.id %}
+                                    <option value="{{resti.id}}">{{resti.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </li>
+                    <li>
+                        <button class="button-small">Vergleich!</button>
+                    </li>
+                    {% endif %}
+                </form>
+            </ul>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+{% include "footer.jinja" %}
+{% include "nav_script.jinja" %}
+</body>
+</html>

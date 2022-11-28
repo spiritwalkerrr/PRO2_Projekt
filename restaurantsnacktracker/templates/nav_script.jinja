@@ -1,0 +1,9 @@
+<script>
+    if(window.location.href.includes("restaurant")){
+    document.querySelectorAll(".nav-item")[1].classList.add("nav-item-active")
+    } else if (window.location.href.includes("visit")){
+    document.querySelectorAll(".nav-item")[2].classList.add("nav-item-active")
+    } else {
+    document.querySelectorAll(".nav-item")[0].classList.add("nav-item-active")
+    }
+</script>

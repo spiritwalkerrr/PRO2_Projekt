@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='list.css') }}">
+</head>
+<body>
+{% include "navbar.jinja" %}
+<div class="grid-wrapper">
+    <div class="grid-container">
+
+<h1>Deine erfassten Restaurants</h1>
+        <div class="button-panel full-width">
+            <a  class="button-small" href="/restaurant/new">
+                Neues Restaurant hinzufügen
+            </a>
+
+        </div>
+{% for restaurant in restaurants %}
+        <div class="list-container full-width">
+            <div class="list-details">
+                <span><h2>Restaurant {{restaurant.name}}</h2><a href="/restaurant/{{restaurant.id}}" class="button-small">Zu {{restaurant.name}}</a></span>
+                <p class="small-paragraph"><span class="bold-text">Strasse:</span> {{restaurant.address}}</p>
+                <p class="small-paragraph"><span class="bold-text">Ort:</span> {{restaurant.code}}, {{restaurant.town}}</p>
+                <p class="small-paragraph"><span class="bold-text">Cuisine:</span> {{restaurant.cuisine}}</p>
+            </div>
+            <div class="list-ratings">
+                <div class="button-wrapper">
+                    <a class="button-small" href="visit/add/{{restaurant.id}}">Besuch hinzufügen</a>
+                </div>
+                <div class="button-wrapper">
+                    <a class="button-small" href="restaurant/edit/{{restaurant.id}}">Details ändern</a>
+                </div>
+                <div class="button-wrapper">
+                    <a class="button-small button-warning" href="restaurant/delete/{{restaurant.id}}">Restaurant löschen</a>
+                </div>
+            </div>
+    </div>
+{% endfor %}
+
+
+
+    </div>
+
+</div>
+
+{% include "footer.jinja" %}
+{% include "nav_script.jinja" %}
+</body>
+</html>

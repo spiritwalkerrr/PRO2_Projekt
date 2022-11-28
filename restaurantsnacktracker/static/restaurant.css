@@ -1,0 +1,19 @@
+.button-panel{
+display: flex;
+justify-content: space-between}
+
+.button-panel .button-small{
+width: 300px;
+margin-bottom: var(--small-margin)}
+
+.restaurant-details{
+border-top: 1px solid black;
+padding: var(--small-margin) 0;
+display: flex;
+justify-content: space-between}
+
+.restaurant-details>*{
+width: 30%}
+
+.restaurant-facts li, .restaurant-controls li{
+margin: 15px 0 !important}
