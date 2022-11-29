@@ -3,25 +3,25 @@ from flask import render_template
 from data_handling import get_visits, get_restaurants, create_new_visit, get_restaurant_name_by_id, get_new_visit_id, \
     delete_existing_visit, get_visit_by_id, edit_existing_visit, get_restaurant_by_id, get_restaurant_statistics, get_new_restaurant_id, create_new_restaurant, delete_restaurant_by_id, edit_restaurant_by_id, get_visits_ranking, get_food_ranking
 
-app = Flask("Hello World")
+app = Flask("RestaurantSnackTracker")
 
 get_food_ranking()
 
 
-@app.route("/restaurant/delete/<id>")
-def delete_restaurant(id):
-    delete_restaurant_by_id(int(id))
+@app.route("/restaurant/delete/<visit_id>")
+def delete_restaurant(visit_id):
+    delete_restaurant_by_id(int(visit_id))
     return redirect("/restaurants")
 
 
-@app.route("/restaurant/edit/<id>", methods=["GET", "POST"])
-def edit_restaurant(id):
+@app.route("/restaurant/edit/<restaurant_id>", methods=["GET", "POST"])
+def edit_restaurant(restaurant_id):
     if request.method == "GET":
-        restaurant = get_restaurant_by_id(int(id))
+        restaurant = get_restaurant_by_id(int(restaurant_id))
         return render_template("edit_restaurant.html", restaurant=restaurant)
     if request.method == "POST":
         new_values = request.form.to_dict()
-        edit_restaurant_by_id(int(id), new_values)
+        edit_restaurant_by_id(int(restaurant_id), new_values)
         return redirect("/restaurants")
 
 
@@ -35,17 +35,17 @@ def new_restaurant():
         return redirect("/restaurants")
 
 
-@app.route("/restaurant/<id>")
-def show_restaurant(id):
-    restaurant = get_restaurant_by_id(int(id))
+@app.route("/restaurant/<visit_id>")
+def show_restaurant(visit_id):
+    restaurant = get_restaurant_by_id(int(visit_id))
     restaurants = get_restaurants()
-    statistics = get_restaurant_statistics(int(id))
+    statistics = get_restaurant_statistics(int(visit_id))
     return render_template("restaurant.html", restaurant=restaurant, statistics=statistics, restaurants=restaurants)
 
 
-@app.route("/restaurants/compare/<id>", methods=["POST"])
-def compare_restaurants(id):
-    id_1 = int(id)
+@app.route("/restaurants/compare/<visit_id>", methods=["POST"])
+def compare_restaurants(visit_id):
+    id_1 = int(visit_id)
     id_2 = int(request.form.to_dict()["restaurant"])
     restaurant_1 = [get_restaurant_by_id(id_1), get_restaurant_statistics(id_1)]
     restaurant_2 = [get_restaurant_by_id(id_2), get_restaurant_statistics(id_2)]
@@ -58,23 +58,23 @@ def show_restaurants():
     return render_template("restaurants.html", restaurants=restaurants)
 
 
-@app.route("/visit/edit/<id>", methods=["GET", "POST"])
-def edit_visit(id):
+@app.route("/visit/edit/<visit_id>", methods=["GET", "POST"])
+def edit_visit(visit_id):
     if request.method == "GET":
-        visit = get_visit_by_id(int(id))
+        visit = get_visit_by_id(int(visit_id))
         restaurants = get_restaurants()
         return render_template("edit_visit.html", restaurants=restaurants, visit=visit)
     if request.method == "POST":
         new_values = request.form.to_dict()
-        edit_existing_visit(id, new_values)
+        edit_existing_visit(visit_id, new_values)
         return redirect("/visits")
 
 
-@app.route("/visit/add/<id>", methods=["GET", "POST"])
-def add_visit(id):
+@app.route("/visit/add/<visit_id>", methods=["GET", "POST"])
+def add_visit(visit_id):
     if request.method == "GET":
-        restaurant = get_restaurant_name_by_id(int(id))
-        return render_template("add_visit.html", restaurant=restaurant, id=id)
+        restaurant = get_restaurant_name_by_id(int(visit_id))
+        return render_template("add_visit.html", restaurant=restaurant, id=visit_id)
     if request.method == "POST":
         new_values = request.form.to_dict()
         create_new_visit(get_new_visit_id(), new_values)
@@ -92,9 +92,9 @@ def new_visit():
         return redirect("/visits")
 
 
-@app.route("/visit/delete/<id>")
-def delete_visit(id):
-    delete_existing_visit(int(id))
+@app.route("/visit/delete/<visit_id>")
+def delete_visit(visit_id):
+    delete_existing_visit(int(visit_id))
     return redirect("/visits")
 
 

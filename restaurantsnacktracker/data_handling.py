@@ -5,31 +5,31 @@ import datetime
 
 # GETS VISITS DATA
 def get_visits():
-    file = open("visits.JSON")
+    file = open("database/visits.JSON")
     visits_data = json.load(file)
     return visits_data
 
 
 # GETS THE NAME OF A RESTAURANT BY SPECIFIC ID
-def get_restaurant_name_by_id(id):
-    file = open("restaurants.JSON")
+def get_restaurant_name_by_id(restaurant_id):
+    file = open("database/restaurants.JSON")
     restaurants_data = json.load(file)
     for restaurant in restaurants_data:
-        if restaurant["id"] == id:
+        if restaurant["id"] == restaurant_id:
             return restaurant["name"]
 
 
 # GETS ALL THE DATA OF A RESTAURANT BY SPECIFIC ID
-def get_restaurant_by_id(id):
-    file = open("restaurants.JSON")
+def get_restaurant_by_id(restaurant_id):
+    file = open("database/restaurants.JSON")
     restaurants_data = json.load(file)
     for restaurant in restaurants_data:
-        if restaurant["id"] == id:
+        if restaurant["id"] == restaurant_id:
             return restaurant
 
 
 # GETS THE STATISTICS FOR A RESTAURANT BY SPECIFIC ID
-def get_restaurant_statistics(id):
+def get_restaurant_statistics(restaurant_id):
     visits = get_visits()
     statistics = {
         "times_visited": 0,
@@ -45,7 +45,7 @@ def get_restaurant_statistics(id):
     price = 0
     wait = 0
     for visit in visits:
-        if visit["restaurant"]["id"] == id:
+        if visit["restaurant"]["id"] == restaurant_id:
             statistics["times_visited"] = statistics["times_visited"] + 1  # COUNT TIMES VISITED
             food_scores = food_scores + visit["ratings"]["food"]  # COUNT UP FOOD SCORES
             service_scores = service_scores + visit["ratings"]["service"]  # COUNT UP SERVICE SCORES
@@ -78,11 +78,11 @@ def get_new_restaurant_id():
 
 
 # CREATES A NEW RESTAURANT ENTRY
-def create_new_restaurant(id, data):
-    file = open("restaurants.JSON")
+def create_new_restaurant(new_id, data):
+    file = open("database/restaurants.JSON")
     restaurants_data = json.load(file)
     new_restaurant = {
-        "id": id,
+        "id": new_id,
         "name": data["name"],
         "address": data["address"],
         "code": int(data["code"]),
@@ -95,28 +95,28 @@ def create_new_restaurant(id, data):
 
 
 # GETS DATA ON ONE VISIT BY SPECIFIC ID
-def get_visit_by_id(id):
-    file = open("visits.JSON")
+def get_visit_by_id(visit_id):
+    file = open("database/visits.JSON")
     visits_data = json.load(file)
     for visit in visits_data:
-        if visit["id"] == id:
+        if visit["id"] == visit_id:
             return visit;
 
 
 # GETS THE RESTAURANTS DATA
 def get_restaurants():
-    file = open("restaurants.JSON")
+    file = open("database/restaurants.JSON")
     restaurants_data = json.load(file)
     return restaurants_data
 
 
 # CREATES A NEW VISIT; REQUIRES AN ID (USE get_new_visit_id) AND THE DATA FROM THE FORM
-def create_new_visit(id, data):
-    file = open("visits.JSON")
+def create_new_visit(new_id, data):
+    file = open("database/visits.JSON")
     visits_data = json.load(file)
     restaurant_name = get_restaurant_name_by_id(int(data["restaurant"]))
     new_visit = {
-            "id": id,
+            "id": new_id,
             "restaurant":
                 {
                     "id": int(data["restaurant"]),
@@ -163,31 +163,31 @@ def delete_existing_visit(visit_id):
 
 
 # DELETES A RESTAURANT AND ITS VISITS
-def delete_restaurant_by_id(id):
-    delete_visits_by_restaurant_id(id)
+def delete_restaurant_by_id(restaurant_id):
+    delete_visits_by_restaurant_id(restaurant_id)
     restaurants = get_restaurants()
     restaurants_data = []
     for restaurant in restaurants:
-        if restaurant["id"] != id:
+        if restaurant["id"] != restaurant_id:
             restaurants_data.append(restaurant)
     save_restaurants(restaurants_data)
     return
 
 
 # EDITS A RESTAURANT AND THE VISITS (RESTAURANT NAME)
-def edit_restaurant_by_id(id, data):
+def edit_restaurant_by_id(restaurant_id, data):
     new_name = data["name"]
     visits = get_visits()
     visits_data = []  # FIRST WE CHANGE THE VISITS BECAUSE THE ALSO CONTAIN THE NAME
     for visit in visits:
-        if visit["restaurant"]["id"] == id:
+        if visit["restaurant"]["id"] == restaurant_id:
             visit["restaurant"]["name"] = new_name
         visits_data.append(visit)
     save_visits(visits_data)  # SAVE THE UPDATED VISITS
     restaurants = get_restaurants()
     restaurants_data = []  # NEXT WE CHANGE THE RESTAURANT NAME
     for restaurant in restaurants:
-        if restaurant["id"] == id:
+        if restaurant["id"] == restaurant_id:
             restaurant["name"] = new_name
         restaurants_data.append(restaurant)
     save_restaurants(restaurants_data)  # SAVE THE UPDATED RESTAURANT
@@ -195,28 +195,28 @@ def edit_restaurant_by_id(id, data):
 
 
 # DELETE ALL VISITS OF A CERTAIN RESTAURANT
-def delete_visits_by_restaurant_id(id):
+def delete_visits_by_restaurant_id(restaurant_id):
     visits = get_visits()
     visits_data = []
     for visit in visits:
-        if visit["restaurant"]["id"] != id:
+        if visit["restaurant"]["id"] != restaurant_id:
             visits_data.append(visit)
     save_visits(visits_data)
     return
 
 
 # EDITS AN EXISTING VISIT
-def edit_existing_visit(id, data):
-    id = int(id)
-    delete_existing_visit(id)
-    create_new_visit(id, data)
+def edit_existing_visit(visit_id, data):
+    visit_id = int(visit_id)
+    delete_existing_visit(visit_id)
+    create_new_visit(visit_id, data)
     return
 
 
 # UPDATES THE VISITS JSON WITH THE PROVIDED DATA
 def save_visits(data):
     json_string = json.dumps(data)
-    file = open("visits.JSON", "w")
+    file = open("database/visits.JSON", "w")
     file.write(json_string)
     file.close
     return
@@ -225,7 +225,7 @@ def save_visits(data):
 # UPDATES THE RESTAURANTS JSON WITH THE PROVIDED DATA
 def save_restaurants(data):
     json_string = json.dumps(data)
-    file = open("restaurants.JSON", "w")
+    file = open("database/restaurants.JSON", "w")
     file.write(json_string)
     file.close
     return
