@@ -8,6 +8,8 @@ def get_visits():
     file = open("database/visits.JSON")
     # load the data from database
     visits_data = json.load(file)
+    # since we always want to display them in the order of most recently added to least recently added we reverse
+    visits_data.reverse()
     # return that data
     return visits_data
 
@@ -219,6 +221,24 @@ def get_new_visit_id():
         new_id = new_id + 1
     # return that new ID
     return new_id
+
+
+# GETS ALL VISITS OF A CERTAIN RESTAURANT
+# parameter restaurant_id is the unique identifier of the restaurant
+def get_visits_by_restaurant_id(restaurant_id):
+    # get all visits
+    visits = get_visits()
+    # prepare a fresh empty list for the visits
+    restaurant_visits = []
+    # loop over all visits
+    for visit in visits:
+        # see if the visit is for the restaurant we look for
+        if visit["restaurant"]["id"] == restaurant_id:
+            # if it does match, append to the list we made
+            restaurant_visits.append(visit)
+    # List is in wrong order, we want recently added entries to be shown first
+    # return the list of visits we just generated
+    return restaurant_visits
 
 
 # DELETES A VISIT WITH A SPECIFIC ID

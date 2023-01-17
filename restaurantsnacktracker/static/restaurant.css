@@ -17,3 +17,24 @@ width: 30%}
 
 .restaurant-facts li, .restaurant-controls li{
 margin: 15px 0 !important}
+
+.visits li{
+display: flex;
+border-top: 1px solid black;
+padding-top: 10px;
+}
+
+.visit-left{
+width: 40%;}
+
+.visit-left p{
+margin: 3px 0;}
+
+.list-ratings{
+width: 40%}
+
+.visit-buttons{
+width: 20%;}
+
+.button-wrapper{
+margin-bottom: 10px;}
