@@ -41,8 +41,8 @@ def edit_restaurant(restaurant_id):
         # To edit the restaurant, we need to both get its ID and the new (edited) information.
         # The ID we get from the URL, the new values we get from the dictionary we just made
         edit_restaurant_by_id(int(restaurant_id), new_values)
-        # redirect to the restaurants overview
-        return redirect("/restaurants")
+        # redirect to the restaurant we just edited
+        return redirect("/restaurant/" + str(restaurant_id))
 
 
 # this route is used to create a new restaurant for the database
@@ -56,11 +56,12 @@ def new_restaurant():
     if request.method == "POST":
         # makes ugly request into beautiful dictionary
         new_values = request.form.to_dict()
+        # first we generate the new restaurant ID, so we can use it for the redirect and creation of database entry
+        new_id = get_new_restaurant_id()
         # Adds a new restaurant to the database. To do that we need the new values and the ID.
-        # first parameter generates us a new unique ID, second is just the new values
-        create_new_restaurant(get_new_restaurant_id(), new_values)
-        # redirect to restaurants overview‡
-        return redirect("/restaurants")
+        create_new_restaurant(new_id, new_values)
+        # redirect to the restaurant we just edited
+        return redirect("/restaurant/" + str(new_id))
 
 
 # this route displays one of the restaurants identified by its ID
@@ -109,14 +110,6 @@ def show_restaurants():
     return render_template("restaurants.html", restaurants=restaurants)
 
 
-# Late in the project I added the functionality to display visit lists for the restaurants individually
-# this route fixes the editing URL not working when I copy/pasted it
-@app.route("/restaurant/visit/edit/<visit_id>")
-def edit_visit_from_restaurant(visit_id):
-    # surely this could be done better, but it just redirects to the URL I want it to
-    return redirect("/visit/edit/" + visit_id)
-
-
 # this route is used to display a single visit's edit form and also handles the actual edit POST request
 @app.route("/visit/edit/<visit_id>", methods=["GET", "POST"])
 # we need the visit ID, here it is
@@ -137,8 +130,9 @@ def edit_visit(visit_id):
         new_values = request.form.to_dict()
         # this function overwrites previous values of a visit by ID with the new ones
         edit_existing_visit(int(visit_id), new_values)
-        # redirect to visits overview
-        return redirect("/visits")
+        # Late addition: redirect to the visit's restaurant
+        # added this so users can instantly see when they edit from a restaurant's "Besuch bearbeiten" button
+        return redirect("/restaurant/" + str(new_values["restaurant"]))
 
 
 # So we can edit visits (see above) but we also need to make new ones. That's what we do here.
@@ -174,8 +168,11 @@ def new_visit():
     if request.method == "GET":
         # to select a restaurant, we need a list of them. this function get it
         restaurants = get_restaurants()
+        # late addition here. The user should not be able to create a new visit, if there are no restaurants.
+        # hence we get the length of the restaurants list, we can use that to display information if there are none.
+        restaurants_amount = len(restaurants)
         # serves render template with restaurant names
-        return render_template("new_visit.html", restaurants=restaurants)
+        return render_template("new_visit.html", restaurants=restaurants, amount=restaurants_amount)
     # POST request takes form data and saves a new visit
     if request.method == "POST":
         # make ugly request into beautiful dictionary
@@ -188,15 +185,24 @@ def new_visit():
 
 # So: we can add, but we also want to delete. this route handles that
 @app.route("/visit/delete/<visit_id>")
-# Late in the project I added the functionality to display visit lists for the restaurants individually
-# this route fixes the deleting URL not working when I copy/pasted it
-@app.route("/restaurant/visit/delete/<visit_id>")
 # get visit ID from URL
 def delete_visit(visit_id):
     # this function purges that visit from existence. bye bye.
     delete_existing_visit(int(visit_id))
     # redirect to visits overview
     return redirect("/visits")
+
+
+# Late in the project I added the functionality to display visit lists for the restaurants individually
+# this route is needed for when a visit is deleted whilst being on a specific restaurant page
+# in that case we want to redirect to that restaurant when we're done.
+@app.route("/restaurant/<restaurant_id>/delete/<visit_id>")
+# get visit ID and restaurant ID from URL
+def delete_visit_and_return(visit_id, restaurant_id):
+    # this function purges that visit from existence. bye bye.
+    delete_existing_visit(int(visit_id))
+    # redirect to the restaurant we were just looking at
+    return redirect("/restaurant/" + str(restaurant_id))
 
 
 # this route displays all visits.

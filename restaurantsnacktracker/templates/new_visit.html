@@ -16,7 +16,9 @@
 {% include "navbar.jinja" %}
 <div class="grid-wrapper">
     <div class="grid-container">
+        {% if amount != 0 %}
         <h1>Neuen Restaurantbesuch hinzufügen</h1>
+        {{restaurants.len}}
         <form class="full-width" action="/visit/new" method="POST">
             <div class="input-group">
                 <label for="restaurant">Wähle das Restaurant:</label>
@@ -60,7 +62,18 @@
             </div>
             <button class="button-small">Absenden</button>
         </form>
-
+    {% endif %}
+        <div class="full-width no-restaurants">
+        {% if amount == 0 %}
+            <h1>Es sind keine Restaurants in der Datenbank.</h1>
+            <p class="standard-paragraph">Du kannst erst Besuche hinzufügen, sobald du mindestens ein Restaurant erstellt hast.</p>
+        {% endif %}
+        {% if amount != 0 %}
+            <h2>Restaurant existiert noch nicht?</h2>
+            <p class="standard-paragraph">Du kannst auch zuerst ein neues Restaurant erstellen.</p>
+        {% endif %}
+            <p><a href="/restaurant/new" class="button-small">Restaurant erstellen</a></p>
+       </div>
     </div>
 
 </div>
