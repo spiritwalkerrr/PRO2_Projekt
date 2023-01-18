@@ -171,3 +171,8 @@ Insbesondere bei weniger komplexen Projekten könnte ich mir durchaus vorstellen
 Es lässt sich wirklich schnell viel erreichen. Nicht dass ich damit sagen will, Python kann nicht komplex sein.
 Ich fühle mich einfach noch sicherer mit NodeJS, falls es herausfordernder wird.
 
+Auch ansprechen möchte ich kurz, dass ich die Ausführungen zu spezifischen Vorgängen, etwa dem Löschen 
+von Einträgen, bewusst im readme kurz gehalten habe. Grund dafür ist, dass manche der Funktionen
+(etwa die für die Frontpage erforderliche Statistik-Berechnung) viele Schritte aufweisen und die Diagramme
+wohl in Grösse ausufern würden. Ausserdem habe ich am Tag davor die Comments geschrieben, die wirklich Schritt
+für Schritt beschreiben, was im Code passiert.
