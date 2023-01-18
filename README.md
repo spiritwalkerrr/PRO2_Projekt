@@ -51,6 +51,8 @@ einfachen Syntax und der Darstellung und aus der Darstellung, die an Datenstrukt
 
 Die Dateneingabe erfolgt über HTML-Forms. Im Frontend findet eine Validation statt - alle Eingabewerte müssen die richtige Art sein
 (zB PLZ sind immer Zahlenwerte). Der Nutzer kann auch kein Eingabefeld überspringen, inkomplette Formulare werden nicht abgeschickt.
+Die Validation ist nicht perfekt - so ist es unwahrscheinlich, dass ein Besuch nur 1 CHF kostet. Hier wird dem Nutzer vertraut,
+das liesse sich aber auch mit wenig Aufwand noch anpassen. 
 
 Der Nutzer kann Daten eingeben, in dem er neue Besuche oder Restaurants erstellt. Buttons dazu finden sich immer an Stellen, wo dies Sinn ergibt.
 Beispiel wäre etwa die Ansicht eines Restaurants - der Nutzer kann direkt hier per Button direkt für dieses Restaurant einen Besuch hinzufügen.
