@@ -1,16 +1,18 @@
 from flask import Flask,  request, redirect
 from flask import render_template
+# SO MANY IMPORTS WOWIE
 from data_handling import get_visits, get_restaurants, create_new_visit, get_restaurant_name_by_id, get_new_visit_id, \
     delete_existing_visit, get_visit_by_id, edit_existing_visit, get_restaurant_by_id, get_restaurant_statistics, \
     get_new_restaurant_id, create_new_restaurant, delete_restaurant_by_id, edit_restaurant_by_id, get_visits_ranking, \
     get_food_ranking, get_visits_by_restaurant_id
 
+
 app = Flask("RestaurantSnackTracker")
 
 # HOW THIS FILE IS STRUCTURED 1. I like to keep my routes short. Therefore, most of the handling is done in
 # data_handling.py 2. First all the routes related to restaurants are shown, then all the routes related to visits 3.
-# Lastly we have the homepage ("/") and before that some error handling code in case someone decided to type in a
-# nonsensical URL
+# Lastly we have the homepage ("/") and after that some error handling code in case someone decided to type in a
+# nonsensical URL like "/admin"
 
 
 # this route is used to delete a restaurant with a given restaurant ID
@@ -92,6 +94,7 @@ def compare_restaurants(restaurant_id):
     # so to compare two restaurants we need two IDs. First one comes from the URL
     id_1 = int(restaurant_id)
     # second one comes by taking the ugly request and making it into a beautiful dictionary
+    # we extract the second ID by finding it in that dictionary
     id_2 = int(request.form.to_dict()["restaurant"])
     # so this basically takes the ID and returns us a list of restaurant info and restaurant statistics
     restaurant_1 = [get_restaurant_by_id(id_1), get_restaurant_statistics(id_1)]
@@ -137,6 +140,7 @@ def edit_visit(visit_id):
 
 # So we can edit visits (see above) but we also need to make new ones. That's what we do here.
 # However, it's not so easy. Create isn't just create in this case. This route adds a visit to a SPECIFIC restaurant
+# this is needed when we do "Besuch hinzufügen" at a restaurants page for example, we don't need to choose it then.
 # there will be another route that lets you create a new visit and also CHOOSE a restaurant
 # notice the "restaurant_id" in the URL? We need it because this new visit is assigned to a specific restaurant
 @app.route("/visit/add/<restaurant_id>", methods=["GET", "POST"])

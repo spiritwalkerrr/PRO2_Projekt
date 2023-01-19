@@ -445,7 +445,7 @@ def get_food_ranking():
         value_ranking = sorted(value_ranking)
         # reverse because its ascending and we want descending
         value_ranking.reverse()
-    # loop over the ranking to again adjust the name with the position
+    # loop x times, where x is the ranking length to again adjust the name with the position
     for x in range(len(value_ranking)):
         # this basically turns for example "Hu Xin" into "1. Hu Xin"
         value_ranking[x][3] = str(x + 1) + ". " + value_ranking[x][3]
@@ -455,7 +455,7 @@ def get_food_ranking():
 
 # UPDATES THE VISITS JSON WITH THE PROVIDED DATA
 def save_visits(data):
-    # makes JSON out of the list of dictionaries we pass through
+    # makes JSON out of the list of dictionaries we give it
     json_string = json.dumps(data)
     # opens the database file
     file = open("database/visits.JSON", "w")
